@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JButton;
 
 public class select_houseinfo {
 
@@ -44,6 +45,9 @@ public class select_houseinfo {
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 0, 424, 252);
 		frame.getContentPane().add(panel);
+		
+		JButton btnNewButton = new JButton("New button");
+		panel.add(btnNewButton);
 	}
 
 }
