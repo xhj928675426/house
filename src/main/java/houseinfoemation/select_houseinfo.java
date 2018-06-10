@@ -3,6 +3,7 @@ package houseinfoemation;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class select_houseinfo {
 
@@ -38,6 +39,11 @@ public class select_houseinfo {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JPanel panel = new JPanel();
+		panel.setBounds(10, 0, 424, 252);
+		frame.getContentPane().add(panel);
 	}
 
 }
