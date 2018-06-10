@@ -15,7 +15,7 @@ import java.awt.event.ActionEvent;
 public class house_account {
 
 	private JFrame frame;
-
+public String id;
 	/**
 	 * Launch the application.
 	 */
@@ -36,6 +36,7 @@ public class house_account {
 	 * Create the application.
 	 */
 	public house_account(String id) {
+		this.id=id;
 		initialize();
 	}
 
@@ -103,7 +104,7 @@ public class house_account {
 			
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				pay_info PAY_INFO=new pay_info();
+				pay_info PAY_INFO=new pay_info(id);
 				frame.dispose();
 			}
 		});

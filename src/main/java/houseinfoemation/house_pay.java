@@ -16,10 +16,11 @@ import javax.swing.JOptionPane;
 
 import com.mysql.jdbc.PreparedStatement;
 import java_work.ATM;
+
 public class house_pay {
 
 	private JFrame frame;
-
+	public String id;
 	/**
 	 * Launch the application.
 	 */
@@ -27,7 +28,7 @@ public class house_pay {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					house_pay window = new house_pay();
+					house_pay window = new house_pay("1");
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,7 +40,8 @@ public class house_pay {
 	/**
 	 * Create the application.
 	 */
-	public house_pay() {
+	public house_pay(String id) {
+		this.id=id;
 		initialize();
 	}
 
@@ -50,104 +52,133 @@ public class house_pay {
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("宋体", Font.PLAIN, 12));
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		
+
 		JButton button = new JButton("\u9009\u62E9\u8D2D\u4E70");
 		button.setFont(new Font("宋体", Font.PLAIN, 12));
 		button.setBounds(10, 210, 93, 23);
 		frame.getContentPane().add(button);
-		
+
 		JButton button_1 = new JButton("\u67E5\u8BE2\u623F\u5C4B");
 		button_1.setFont(new Font("宋体", Font.PLAIN, 12));
 		button_1.setBounds(275, 210, 93, 23);
 		frame.getContentPane().add(button_1);
-		
+
 		TextArea textArea = new TextArea();
 		textArea.setBounds(0, 10, 440, 170);
 		frame.getContentPane().add(textArea);
 		JButton button_2 = new JButton("\u5237\u65B0");
 		button_2.setFont(new Font("宋体", Font.PLAIN, 12));
 		button_2.setBounds(156, 210, 93, 23);
-		
+
 		try {
-		
-		JDBC j=new JDBC();
-		String text="姓名:";
-		String sql="select*from house_pay";
-		Statement st=j.con.createStatement();
-		ResultSet rs=st.executeQuery(sql);
-		while(rs.next()) {
-			text+=rs.getString("people");
-			text+="\t"+"id: "+rs.getString("id");
-			text+="\t"+"状态： "+rs.getString("status");
-			text+="\t"+"平方米： "+rs.getString("squer");
-			text+="\t"+"价格： "+rs.getString("money");
-			text+="\t"+"所属人： "+rs.getString("whoes");
-			text+="\t"+"所属人账户："+rs.getString("accountnumber");
-		}
-		textArea.setText(text);
-		
-	
-		frame.getContentPane().add(button_2);
-		rs.close();
-		st.close();
-		
-		}catch(Exception e) {
-			
+
+			JDBC j = new JDBC();	
+			String text ="";
+			String sql = "select*from house_pay";
+			Statement st = j.con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				text+="占用人ID：";
+				text += rs.getString("people");
+				text += "\t" + "id: " + rs.getString("id");
+				text += "\t" + "状态： " + rs.getString("status");
+				text += "\t" + "平方米： " + rs.getString("squer");
+				text += "\t" + "价格： " + rs.getString("money");
+				text += "\t" + "所属人： " + rs.getString("whoes");
+				text += "\t" + "所属人账户：" + rs.getString("accountnumber");
+				text += "\n";
+			}
+			textArea.setText(text);
+
+			frame.getContentPane().add(button_2);
+			rs.close();
+			st.close();
+
+		} catch (Exception e) {
+
 			e.printStackTrace();
-		
+
 		}
-		
+
 		button.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				String str=JOptionPane.showInputDialog(null,"请输入房屋id：\n","title",JOptionPane.PLAIN_MESSAGE);
-				JDBC j=new JDBC();
-				PreparedStatement st;
-				String sta=null;
-				try {
-					st = (PreparedStatement) j.con.prepareStatement("select status from house_pay where id=?");
-					st.setString(1, str);
-					ResultSet rs=st.executeQuery();
-					while(rs.next()) {
-						sta=rs.getString("status");
+				String str = JOptionPane.showInputDialog(null, "请输入房屋id：\n", "title", JOptionPane.PLAIN_MESSAGE);
+				if (isexit(str)==false) {
+					JDBC j = new JDBC();
+					PreparedStatement st;
+					String sta = null;
+					try {
+						st = (PreparedStatement) j.con.prepareStatement("select status from house_pay where id=?");
+						st.setString(1, str);
+						ResultSet rs = st.executeQuery();
+						while (rs.next()) {
+							sta = rs.getString("status");
+						}
+						if (sta.equals("占用")) {
+
+							JOptionPane.showMessageDialog(null, "该房屋已被占用！");
+						} else {
+
+							// 购买操作 ，调用ATM机
+							PreparedStatement tt = (PreparedStatement) j.con
+									.prepareStatement("update  house_pay set status='占用' where id=?");
+							tt.setString(1, str);
+							tt.executeUpdate();
+							tt.close();
+							PreparedStatement t = (PreparedStatement) j.con
+									.prepareStatement("update  house_pay set people=? where id=?");
+							System.out.println(house_index.Did);
+							t.setString(1, id);
+							t.setString(2, str);
+							t.executeUpdate();
+							t.close();
+							ATM m = new ATM();
+						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
-					if(sta.equals("占用")) {
-					
-						JOptionPane.showMessageDialog(null, "该房屋已被占用！");
-					}else {
-						
-						//购买操作 ，调用ATM机
-						PreparedStatement tt=(PreparedStatement) j.con.prepareStatement("update  house_pay set status='占用' where id=?");
-						tt.setString(1, str);
-						tt.executeUpdate();	
-						ATM m=new ATM();				 	
-					}
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}			
+				}else {
+					JOptionPane.showMessageDialog(null,"该ID不存在！");
+				}
 			}
 		});
-		
-		
-		//刷新
+
+		// 刷新
 		button_2.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-			frame.dispose();
-			house_pay l=new house_pay();
-				
+
+				frame.dispose();
+				house_pay l = new house_pay(id);
+
 			}
 		});
-		
-		
-		
+
+	}
+
+	public boolean isexit(String str) {
+		JDBC j = new JDBC();
+		try {
+			Statement st = j.con.createStatement();
+			ResultSet rs = st.executeQuery("select id from house_pay");
+			while (rs.next()) {
+				String str1 = rs.getString("id");
+				if (str.equals(str1)) {
+					return false;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return true;
 	}
 }

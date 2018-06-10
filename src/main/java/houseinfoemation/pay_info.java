@@ -15,7 +15,7 @@ import javax.swing.JButton;
 public class pay_info {
 
 	private JFrame frame;
-
+	public String id;
 	/**
 	 * Launch the application.
 	 */
@@ -23,7 +23,7 @@ public class pay_info {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					pay_info window = new pay_info();
+					pay_info window = new pay_info("1");
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -35,7 +35,8 @@ public class pay_info {
 	/**
 	 * Create the application.
 	 */
-	public pay_info() {
+	public pay_info(String id) {
+		this.id=id;
 		initialize();
 	}
 
@@ -84,7 +85,7 @@ public class pay_info {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				
-				house_pay HOUSE_PAY=new house_pay();
+				house_pay HOUSE_PAY=new house_pay(id);
 				
 			}
 		});
@@ -94,7 +95,7 @@ public class pay_info {
 			
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				house_sell HOUSE_SELL=new house_sell();
+				house_sell HOUSE_SELL=new house_sell(id);
 					
 			}
 		});

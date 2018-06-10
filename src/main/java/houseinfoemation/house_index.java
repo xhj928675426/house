@@ -13,12 +13,11 @@ import java.sql.SQLException;
 import java.awt.Font;
 import javax.swing.JTextField;
 
-import com.mysql.jdbc.Statement;
+import java.sql.*;
 
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
-
 public class house_index {
 
 	public JFrame frame;
