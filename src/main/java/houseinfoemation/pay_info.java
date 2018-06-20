@@ -7,10 +7,14 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import java.awt.Toolkit;
 
 public class pay_info {
 
@@ -45,6 +49,7 @@ public class pay_info {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\1b9e477d6ab34c122ed80d122eaf2690.jpg"));
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -56,7 +61,20 @@ public class pay_info {
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		JPanel panel_1 = new JPanel();
+		JPanel panel_1 = new JPanel(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2748426784349171958L;
+
+			public void paintComponent(Graphics g) {
+				ImageIcon icon = new ImageIcon(
+						"C:\\Users\\Administrator\\eclipse-workspace\\house\\1b9e477d6ab34c122ed80d122eaf2690.jpg");
+				// 图片随窗体大小而变化
+				g.drawImage(icon.getImage(), 0, 0, frame.getSize().width, frame.getSize().height, frame);
+			}
+
+		};
 		panel_1.setBounds(0, 0, 434, 262);
 		panel.add(panel_1);
 		panel_1.setLayout(null);

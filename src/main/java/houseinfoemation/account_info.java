@@ -27,6 +27,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.sql.ResultSet;
+import java.awt.Toolkit;
 
 public class account_info {
 
@@ -49,10 +50,10 @@ public class account_info {
 	public JButton button;
 	public JButton button_1;
 	public JButton button_2;
-	public String id;
+	public String id=null;
 	private JLabel label_6;
 	private JTextField textField_5;
-	public String sex = null;
+	public String sex =null;
 	public String idd = null;
 	public String name = null;
 	public String email = null;
@@ -84,8 +85,9 @@ public class account_info {
 	 * Create the application.
 	 */
 	public account_info(String id) {
-		initialize();
 		this.id = id;
+		initialize();
+		
 	}
 
 	/**
@@ -93,6 +95,7 @@ public class account_info {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\9a23661a338d750548d21cd37ed3c9e4.jpg"));
 		frame.setTitle("\u7528\u6237\u4FE1\u606F");
 		frame.setBounds(100, 100, 597, 341);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -100,7 +103,20 @@ public class account_info {
 		frame.setVisible(true);
 		frame.getContentPane().setLayout(null);
 
-		panel = new JPanel();
+		panel = new JPanel(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2748426784349171958L;
+
+			public void paintComponent(Graphics g) {
+				ImageIcon icon = new ImageIcon(
+						"C:\\Users\\Administrator\\eclipse-workspace\\house\\9a23661a338d750548d21cd37ed3c9e4.jpg");
+				// 图片随窗体大小而变化
+				g.drawImage(icon.getImage(), 0, 0, frame.getSize().width, frame.getSize().height, frame);
+			}
+
+		};
 		panel.setBounds(0, 0, 591, 313);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -213,20 +229,25 @@ public class account_info {
 			JDBC j = new JDBC();
 		if(house_index.radioButton.isSelected()) {
 			 st = JDBC.con.prepareStatement("select*from user where id=?");
-			st.setString(1, "928675426");
+			st.setString(1, house_index.Did);
+			System.out.println(house_index.Did);
 		}else {
 				st = JDBC.con.prepareStatement("select*from market where id=?");
-				st.setString(1, "928675426");
+				st.setString(1, house_index.Did);
+				System.out.println(house_index.Did);
 		}
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				idd = rs.getString("id");
+				System.out.println(idd);
 				sex = rs.getString("sex");
+				System.out.println(sex);
 				name = rs.getString("name");
 				email = rs.getString("email");
 				connection = rs.getString("connection");
 				idcard = rs.getString("idcard");
 				pass = rs.getString("password");
+				System.out.println(pass);
 				fileURL=rs.getString("idcard_image");
 
 			}
@@ -246,10 +267,10 @@ public class account_info {
 			};
 			panel_1.setBounds(322, 110, 244, 152);
 			panel.add(panel_1);
-			if (sex.equals("男")) {
+			if (sex!=null&&sex.equals("男")) {
 				radioButton.setSelected(true);
 
-			} else if (sex.equals("女")) {
+			} else if (sex!=null&&sex.equals("女")) {
 				radioButton_1.setSelected(true);
 			}
 			textField.setText(idd);
@@ -257,11 +278,12 @@ public class account_info {
 			textField_4.setText(idcard);
 			textField_1.setText(name);
 			textField_5.setText(pass);
-
-			String[] e = email.split("@");
+			String[] e = null ;
+			if(email!=null) {
+			e= email.split("@");
 			textField_2.setText(e[0]);
 			
-
+			
 
 			// 后面的邮箱名匹配
 			if (e[1].equals("qq.com")) {
@@ -271,9 +293,11 @@ public class account_info {
 			} else {
 				comboBox.setSelectedIndex(1);
 			}
+			}
 			rs.close();
 			st.close();
 			JDBC.con.close();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

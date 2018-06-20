@@ -6,11 +6,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Color;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Button;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
 
 public class house_account {
 
@@ -45,13 +49,27 @@ public String id;
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\64bee3f7a2907d17b15fa5abae4180fe.jpg"));
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
 		frame.setResizable(false);
 		
-		JPanel panel = new JPanel();
+		JPanel panel = new JPanel(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2748426784349171958L;
+
+			public void paintComponent(Graphics g) {
+				ImageIcon icon = new ImageIcon(
+						"C:\\Users\\Administrator\\eclipse-workspace\\house\\64bee3f7a2907d17b15fa5abae4180fe.jpg");
+				// 图片随窗体大小而变化
+				g.drawImage(icon.getImage(), 0, 0, frame.getSize().width, frame.getSize().height, frame);
+			}
+
+		};
 		panel.setBackground(Color.WHITE);
 		panel.setForeground(new Color(0, 255, 127));
 		panel.setBounds(0, 0, 444, 272);

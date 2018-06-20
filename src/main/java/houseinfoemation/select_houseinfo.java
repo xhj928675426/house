@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -12,12 +13,14 @@ import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.ResultSet;
 
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Label;
 import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.Color;
+import java.awt.Toolkit;
 
 public class select_houseinfo {
 
@@ -56,12 +59,27 @@ public class select_houseinfo {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\3f86ce856b723a14f281d2888283267e.jpg"));
 		frame.setBounds(100, 100, 544, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setVisible(true);
 
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 0, 518, 252);
+		JPanel panel = new JPanel(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2748426784349171958L;
+
+			public void paintComponent(Graphics g) {
+				ImageIcon icon = new ImageIcon(
+						"C:\\Users\\Administrator\\eclipse-workspace\\house\\3f86ce856b723a14f281d2888283267e.jpg");
+				// 图片随窗体大小而变化
+				g.drawImage(icon.getImage(), 0, 0, frame.getSize().width, frame.getSize().height, frame);
+			}
+
+		};
+		panel.setBounds(0, 0, 528, 262);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 

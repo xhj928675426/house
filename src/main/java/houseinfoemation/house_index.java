@@ -11,13 +11,18 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.Font;
+import java.awt.Graphics;
+
 import javax.swing.JTextField;
 
 import java.sql.*;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
+import java.awt.Toolkit;
+import java.awt.Color;
 public class house_index {
 
 	public JFrame frame;
@@ -30,6 +35,8 @@ public class house_index {
 	private JButton button_1;
 	private JButton button_2;
 	public static String Did;
+	private JLabel label_2;
+	private JLabel lblatm;
 
 	/**
 	 * Launch the application.
@@ -59,6 +66,7 @@ public class house_index {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\6fb0bdf030439bbe57d38edd1cde0124.jpg"));
 		frame.setTitle("\u4E8C\u624B\u623F\u4EA4\u6613\u7CFB\u7EDF");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,8 +74,21 @@ public class house_index {
 		frame.setResizable(false);
 		frame.getContentPane().setLayout(null);
 
-		panel = new JPanel();
-		panel.setBounds(0, 0, 434, 262);
+		panel = new JPanel(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2748426784349171958L;
+
+			public void paintComponent(Graphics g) {
+				ImageIcon icon = new ImageIcon(
+						"C:\\Users\\Administrator\\eclipse-workspace\\house\\6fb0bdf030439bbe57d38edd1cde0124.jpg");
+				// 图片随窗体大小而变化
+				g.drawImage(icon.getImage(), 0, 0, frame.getSize().width, frame.getSize().height, frame);
+			}
+
+		};
+		panel.setBounds(0, 0, 444, 272);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -114,6 +135,18 @@ public class house_index {
 		button_2.setFont(new Font("微锟斤拷锟脚猴拷", Font.PLAIN, 12));
 		button_2.setBounds(162, 162, 141, 23);
 		panel.add(button_2);
+		
+		label_2 = new JLabel("        欢迎使用二手房交易系统");
+		label_2.setForeground(Color.RED);
+		label_2.setFont(new Font("宋体", Font.PLAIN, 18));
+		label_2.setBounds(25, 10, 399, 31);
+		panel.add(label_2);
+		
+		lblatm = new JLabel("本系统采用自编ATM交易系统1.0");
+		lblatm.setForeground(Color.RED);
+		lblatm.setFont(new Font("宋体", Font.PLAIN, 12));
+		lblatm.setBounds(215, 247, 191, 15);
+		panel.add(lblatm);
 
 		// 锟斤拷陆锟铰硷拷
 		button.addActionListener(new ActionListener() {
@@ -142,9 +175,10 @@ public class house_index {
 									Did = ID;
 									re.close();
 									JDBC.con.close();
+									frame.dispose();
 									JOptionPane.showMessageDialog(null, "登录成功!");
 									house_account HOUSE_ACCOUNT=new house_account(Did);
-									frame.dispose();
+									break;
 								}
 
 							}

@@ -1,5 +1,6 @@
 package houseinfoemation;
 
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.TextArea;
@@ -10,12 +11,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.print.attribute.standard.PresentationDirection;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import com.mysql.jdbc.PreparedStatement;
 import java_work.ATM;
+import java.awt.Toolkit;
 
 public class house_pay {
 
@@ -50,12 +55,25 @@ public class house_pay {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\152d35494e0bf0cdbc0c6f3f7acd0aab.jpeg"));
 		frame.getContentPane().setFont(new Font("宋体", Font.PLAIN, 12));
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
+		ImageIcon img = new ImageIcon("C:\\Users\\Administrator\\eclipse-workspace\\house\\152d35494e0bf0cdbc0c6f3f7acd0aab.jpeg");  
+        //要设置的背景图片  
+        JLabel imgLabel = new JLabel(img);  
+        //将背景图放在标签里。  
+       frame.getLayeredPane().add(imgLabel, new Integer(Integer.MIN_VALUE));  
+        //将背景标签添加到jfram的LayeredPane面板里。  
+        imgLabel.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());  
+        // 设置背景标签的位置  
+        Container contain = frame.getContentPane();  
+        ((JComponent) contain).setOpaque(false);   
+        // 将内容面板设为透明。将LayeredPane面板中的背景显示出来。  
+		
 
 		JButton button = new JButton("\u9009\u62E9\u8D2D\u4E70");
 		button.setFont(new Font("宋体", Font.PLAIN, 12));
@@ -104,6 +122,9 @@ public class house_pay {
 
 		}
 
+		
+		
+		//选择购买
 		button.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -161,9 +182,24 @@ public class house_pay {
 
 			}
 		});
+		//查询
 
+		button_1.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				select_houseinfo info=new select_houseinfo();
+			}
+		});
+		
 	}
 
+	
+	
+	
+	
+	
+		
 	public boolean isexit(String str) {
 		JDBC j = new JDBC();
 		try {

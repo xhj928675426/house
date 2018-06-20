@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
@@ -18,7 +19,9 @@ import javax.swing.JTextField;
 
 import com.mysql.jdbc.PreparedStatement;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import java.awt.Toolkit;
 
 public class house_sell {
 
@@ -29,6 +32,7 @@ public class house_sell {
 	private JTextField textField_3;
 	private JTextField textField_4;
 	public String id;
+
 
 	/**
 	 * Launch the application.
@@ -59,14 +63,28 @@ public class house_sell {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Administrator\\eclipse-workspace\\house\\1111588.jpg"));
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
 		
-		final JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 434, 262);
+		 final JPanel panel = new JPanel(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2748426784349171958L;
+
+			public void paintComponent(Graphics g) {
+				ImageIcon icon = new ImageIcon(
+						"C:\\Users\\Administrator\\eclipse-workspace\\house\\1111588.jpg");
+				// 图片随窗体大小而变化
+				g.drawImage(icon.getImage(), 0, 0, frame.getSize().width, frame.getSize().height, frame);
+			}
+
+		};
+		panel.setBounds(0, 0, 444, 272);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -77,6 +95,8 @@ public class house_sell {
 		panel.add(label);
 		
 		JLabel lblNewLabel = new JLabel("id");
+		lblNewLabel.setForeground(Color.RED);
+		lblNewLabel.setFont(new Font("宋体", Font.PLAIN, 12));
 		lblNewLabel.setBounds(21, 57, 19, 15);
 		panel.add(lblNewLabel);
 		
@@ -86,6 +106,7 @@ public class house_sell {
 		textField.setColumns(10);
 		
 		JLabel label_1 = new JLabel("\u5E73\u65B9\u7C73");
+		label_1.setForeground(Color.RED);
 		label_1.setFont(new Font("宋体", Font.PLAIN, 12));
 		label_1.setBounds(118, 60, 54, 15);
 		panel.add(label_1);
@@ -96,6 +117,7 @@ public class house_sell {
 		textField_1.setColumns(10);
 		
 		JLabel label_2 = new JLabel("\u4EF7\u683C");
+		label_2.setForeground(Color.RED);
 		label_2.setBounds(215, 60, 54, 15);
 		panel.add(label_2);
 		
@@ -105,6 +127,7 @@ public class house_sell {
 		textField_2.setColumns(10);
 		
 		JLabel label_3 = new JLabel("\u6240\u5C5E\u4EBA");
+		label_3.setForeground(Color.RED);
 		label_3.setBounds(21, 142, 54, 15);
 		panel.add(label_3);
 		
@@ -114,6 +137,7 @@ public class house_sell {
 		textField_3.setColumns(10);
 		
 		JLabel label_4 = new JLabel("\u8D26\u6237");
+		label_4.setForeground(Color.RED);
 		label_4.setBounds(108, 142, 54, 15);
 		panel.add(label_4);
 		
@@ -148,6 +172,7 @@ public class house_sell {
 					st.execute();
 					JOptionPane.showMessageDialog(null, "上传信息成功!");
 					st.close();	
+					frame.dispose();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
