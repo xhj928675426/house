@@ -57,7 +57,7 @@ public class pay_info {
 		frame.setVisible(true);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 434, 262);
+		panel.setBounds(0, 0, 444, 272);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -75,7 +75,7 @@ public class pay_info {
 			}
 
 		};
-		panel_1.setBounds(0, 0, 434, 262);
+		panel_1.setBounds(0, 0, 444, 274);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -97,6 +97,12 @@ public class pay_info {
 		button.setBounds(270, 106, 93, 85);
 		panel_1.add(button);
 		
+		JButton button_1 = new JButton("\u8FD4\u56DE");
+		button_1.setBackground(Color.PINK);
+		button_1.setFont(new Font("宋体", Font.PLAIN, 12));
+		button_1.setBounds(153, 205, 93, 47);
+		panel_1.add(button_1);
+		
 		//我要买房
 		btnNewButton.addActionListener(new ActionListener() {
 			
@@ -117,5 +123,19 @@ public class pay_info {
 					
 			}
 		});
+		
+		
+		
+		//返回
+		
+		button_1.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				house_account h=new house_account(house_index.Did);
+				frame.dispose();
+			}
+		});
+		
 	}
 }

@@ -108,7 +108,7 @@ public class house_pay {
 				text += "\t" + "价格： " + rs.getString("money");
 				text += "\t" + "所属人： " + rs.getString("whoes");
 				text += "\t" + "所属人账户：" + rs.getString("accountnumber");
-				text += "\n";
+				text += "\n"+"\n";
 			}
 			textArea.setText(text);
 
