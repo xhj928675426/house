@@ -9,23 +9,29 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
-import javax.print.attribute.standard.PresentationDirection;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import com.mysql.jdbc.PreparedStatement;
 import java_work.ATM;
 import java.awt.Toolkit;
+import javax.swing.JScrollPane;
+import java.awt.ScrollPane;
 
 public class house_pay {
 
 	private JFrame frame;
 	public String id;
+	JTable t;
+	Vector columnNames, rowData;
+
 	/**
 	 * Launch the application.
 	 */
@@ -46,7 +52,7 @@ public class house_pay {
 	 * Create the application.
 	 */
 	public house_pay(String id) {
-		this.id=id;
+		this.id = id;
 		initialize();
 	}
 
@@ -57,64 +63,77 @@ public class house_pay {
 		frame = new JFrame();
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\152d35494e0bf0cdbc0c6f3f7acd0aab.jpeg"));
 		frame.getContentPane().setFont(new Font("宋体", Font.PLAIN, 12));
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 511, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		ImageIcon img = new ImageIcon("C:\\Users\\Administrator\\eclipse-workspace\\house\\152d35494e0bf0cdbc0c6f3f7acd0aab.jpeg");  
-        //要设置的背景图片  
-        JLabel imgLabel = new JLabel(img);  
-        //将背景图放在标签里。  
-       frame.getLayeredPane().add(imgLabel, new Integer(Integer.MIN_VALUE));  
-        //将背景标签添加到jfram的LayeredPane面板里。  
-        imgLabel.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());  
-        // 设置背景标签的位置  
-        Container contain = frame.getContentPane();  
-        ((JComponent) contain).setOpaque(false);   
-        // 将内容面板设为透明。将LayeredPane面板中的背景显示出来。  
-		
+		frame.getContentPane().setLayout(null);
+		ImageIcon img = new ImageIcon(
+				"C:\\Users\\Administrator\\eclipse-workspace\\house\\152d35494e0bf0cdbc0c6f3f7acd0aab.jpeg");
+		// 要设置的背景图片
+		JLabel imgLabel = new JLabel(img);
+		// 将背景图放在标签里。
+		frame.getLayeredPane().add(imgLabel, new Integer(Integer.MIN_VALUE));
+		// 将背景标签添加到jfram的LayeredPane面板里。
+		imgLabel.setBounds(0, 0, img.getIconWidth(), img.getIconHeight());
+		// 设置背景标签的位置
+		Container contain = frame.getContentPane();
+		((JComponent) contain).setOpaque(false);
+		// 将内容面板设为透明。将LayeredPane面板中的背景显示出来。
 
 		JButton button = new JButton("\u9009\u62E9\u8D2D\u4E70");
-		button.setFont(new Font("宋体", Font.PLAIN, 12));
 		button.setBounds(10, 210, 93, 23);
+		button.setFont(new Font("宋体", Font.PLAIN, 12));
 		frame.getContentPane().add(button);
 
 		JButton button_1 = new JButton("\u67E5\u8BE2\u623F\u5C4B");
+		button_1.setBounds(275, 210, 147, 23);
 		button_1.setFont(new Font("宋体", Font.PLAIN, 12));
-		button_1.setBounds(275, 210, 93, 23);
 		frame.getContentPane().add(button_1);
 
-		TextArea textArea = new TextArea();
-		textArea.setBounds(0, 10, 440, 170);
-		frame.getContentPane().add(textArea);
 		JButton button_2 = new JButton("\u5237\u65B0");
-		button_2.setFont(new Font("宋体", Font.PLAIN, 12));
 		button_2.setBounds(156, 210, 93, 23);
+		button_2.setFont(new Font("宋体", Font.PLAIN, 12));
+		frame.getContentPane().add(button_2);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 505, 206);
+		frame.getContentPane().add(scrollPane);
 
 		try {
 
-			JDBC j = new JDBC();	
-			String text ="";
+			columnNames = new Vector();
+
+			columnNames.add("占用人ID");
+			columnNames.add("房屋ID");
+			columnNames.add("状态");
+			columnNames.add("大小");
+			columnNames.add("价格");
+			columnNames.add("所属人");
+			columnNames.add("所属人账户");
+
+			rowData = new Vector();
+			JDBC j = new JDBC();
 			String sql = "select*from house_pay";
 			Statement st = j.con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
-				text+="占用人ID：";
-				text += rs.getString("people");
-				text += "\t" + "id: " + rs.getString("id");
-				text += "\t" + "状态： " + rs.getString("status");
-				text += "\t" + "平方米： " + rs.getString("squer");
-				text += "\t" + "价格： " + rs.getString("money");
-				text += "\t" + "所属人： " + rs.getString("whoes");
-				text += "\t" + "所属人账户：" + rs.getString("accountnumber");
-				text += "\n"+"\n";
+				Vector data = new Vector();
+				data.add(rs.getString(1));
+				data.add(rs.getString(2));
+				data.add(rs.getString(3));
+				data.add(rs.getInt(4));
+				data.add(rs.getInt(5));
+				data.add(rs.getString(6));
+				data.add(rs.getString(7));
+				rowData.add(data);
 			}
-			textArea.setText(text);
 
-			frame.getContentPane().add(button_2);
 			rs.close();
 			st.close();
+			t = new JTable(rowData, columnNames);
+			scrollPane.add(t);
+			scrollPane.setViewportView(t);
 
 		} catch (Exception e) {
 
@@ -122,15 +141,13 @@ public class house_pay {
 
 		}
 
-		
-		
-		//选择购买
+		// 选择购买
 		button.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				String str = JOptionPane.showInputDialog(null, "请输入房屋id：\n", "title", JOptionPane.PLAIN_MESSAGE);
-				if (isexit(str)==false) {
+				if (isexit(str) == false) {
 					JDBC j = new JDBC();
 					PreparedStatement st;
 					String sta = null;
@@ -165,8 +182,8 @@ public class house_pay {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-				}else {
-					JOptionPane.showMessageDialog(null,"该ID不存在！");
+				} else {
+					JOptionPane.showMessageDialog(null, "该ID不存在！");
 				}
 			}
 		});
@@ -182,24 +199,18 @@ public class house_pay {
 
 			}
 		});
-		//查询
+		// 查询
 
 		button_1.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				select_houseinfo info=new select_houseinfo();
+				select_houseinfo info = new select_houseinfo();
 			}
 		});
-		
+
 	}
 
-	
-	
-	
-	
-	
-		
 	public boolean isexit(String str) {
 		JDBC j = new JDBC();
 		try {

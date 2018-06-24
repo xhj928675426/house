@@ -4,6 +4,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,6 +22,7 @@ import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Vector;
 import java.awt.Color;
 import java.awt.Toolkit;
 
@@ -65,7 +69,7 @@ public class select_houseinfo {
 		frame.getContentPane().setLayout(null);
 		frame.setVisible(true);
 
-		JPanel panel = new JPanel(){
+		JPanel panel = new JPanel() {
 			/**
 			 * 
 			 */
@@ -175,11 +179,11 @@ public class select_houseinfo {
 				frame.getContentPane().add(panel);
 				panel.setLayout(null);
 
-				TextArea textArea = new TextArea();
-				textArea.setBounds(0, 56, 440, 206);
-				panel.add(textArea);
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(0, 56, 440, 206);
+				panel.add(scrollPane);
 
-				Label label = new Label("\u4EE5\u4E0B\u4E3A\u67E5\u8BE2\u4FE1\u606F");
+				Label label = new Label("以下为查询信息");
 				label.setForeground(Color.RED);
 				label.setFont(new Font("宋体", Font.PLAIN, 12));
 				label.setBounds(151, 10, 98, 23);
@@ -189,22 +193,33 @@ public class select_houseinfo {
 				try {
 					PreparedStatement st = (PreparedStatement) j.con
 							.prepareStatement("select *from house_pay where squer between ? and ?");
-				st.setString(1, textField.getText());	
-				st.setString(2, textField_3.getText());
-			java.sql.ResultSet rs=st.executeQuery();
-			String text="";	
-			while(rs.next()) {
-					text+="占用人ID：";
-					text += rs.getString("people");
-					text += "\t" + "id: " + rs.getString("id");
-					text += "\t" + "状态： " + rs.getString("status");
-					text += "\t" + "平方米： " + rs.getString("squer");
-					text += "\t" + "价格： " + rs.getString("money");
-					text += "\t" + "所属人： " + rs.getString("whoes");
-					text += "\t" + "所属人账户：" + rs.getString("accountnumber");
-					text += "\n";
-				}
-			textArea.setText(text);
+					st.setString(1, textField.getText());
+					st.setString(2, textField_3.getText());
+					java.sql.ResultSet rs = st.executeQuery();
+					Vector columnNames = new Vector();
+
+					columnNames.add("占用人ID");
+					columnNames.add("房屋ID");
+					columnNames.add("状态");
+					columnNames.add("大小");
+					columnNames.add("价格");
+					columnNames.add("所属人");
+					columnNames.add("所属人账户");
+					Vector rowData = new Vector();
+					while (rs.next()) {
+						Vector data = new Vector();
+						data.add(rs.getString(1));
+						data.add(rs.getString(2));
+						data.add(rs.getString(3));
+						data.add(rs.getInt(4));
+						data.add(rs.getInt(5));
+						data.add(rs.getString(6));
+						data.add(rs.getString(7));
+						rowData.add(data);
+					}
+					JTable t = new JTable(rowData, columnNames);
+					scrollPane.add(t);
+					scrollPane.setViewportView(t);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -213,11 +228,9 @@ public class select_houseinfo {
 			}
 		});
 
-		
-		
-		//按价格查询
+		// 按价格查询
 		button_1.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				JFrame frame = new JFrame();
@@ -231,11 +244,11 @@ public class select_houseinfo {
 				frame.getContentPane().add(panel);
 				panel.setLayout(null);
 
-				TextArea textArea = new TextArea();
-				textArea.setBounds(0, 56, 440, 206);
-				panel.add(textArea);
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(0, 56, 440, 206);
+				panel.add(scrollPane);
 
-				Label label = new Label("\u4EE5\u4E0B\u4E3A\u67E5\u8BE2\u4FE1\u606F");
+				Label label = new Label("以下为查询信息");
 				label.setForeground(Color.RED);
 				label.setFont(new Font("宋体", Font.PLAIN, 12));
 				label.setBounds(151, 10, 98, 23);
@@ -245,34 +258,43 @@ public class select_houseinfo {
 				try {
 					PreparedStatement st = (PreparedStatement) j.con
 							.prepareStatement("select *from house_pay where money between ? and ?");
-				st.setString(1, textField_1.getText());	
-				st.setString(2, textField_4.getText());
-			java.sql.ResultSet rs=st.executeQuery();
-			String text="";	
-			while(rs.next()) {
-					text+="占用人ID：";
-					text += rs.getString("people");
-					text += "\t" + "id: " + rs.getString("id");
-					text += "\t" + "状态： " + rs.getString("status");
-					text += "\t" + "平方米： " + rs.getString("squer");
-					text += "\t" + "价格： " + rs.getString("money");
-					text += "\t" + "所属人： " + rs.getString("whoes");
-					text += "\t" + "所属人账户：" + rs.getString("accountnumber");
-					text += "\n";
-				}
-			textArea.setText(text);
+					st.setString(1, textField_1.getText());
+					st.setString(2, textField_4.getText());
+					java.sql.ResultSet rs = st.executeQuery();
+					Vector columnNames = new Vector();
+
+					columnNames.add("占用人ID");
+					columnNames.add("房屋ID");
+					columnNames.add("状态");
+					columnNames.add("大小");
+					columnNames.add("价格");
+					columnNames.add("所属人");
+					columnNames.add("所属人账户");
+					Vector rowData = new Vector();
+					while (rs.next()) {
+						Vector data = new Vector();
+						data.add(rs.getString(1));
+						data.add(rs.getString(2));
+						data.add(rs.getString(3));
+						data.add(rs.getInt(4));
+						data.add(rs.getInt(5));
+						data.add(rs.getString(6));
+						data.add(rs.getString(7));
+						rowData.add(data);
+					}
+					JTable t = new JTable(rowData, columnNames);
+					scrollPane.add(t);
+					scrollPane.setViewportView(t);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 		});
-		
-		
-		
-		//按所属人查询
+
+		// 按所属人查询
 		button_2.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				JFrame frame = new JFrame();
@@ -286,11 +308,11 @@ public class select_houseinfo {
 				frame.getContentPane().add(panel);
 				panel.setLayout(null);
 
-				TextArea textArea = new TextArea();
-				textArea.setBounds(0, 56, 440, 206);
-				panel.add(textArea);
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(0, 56, 440, 206);
+				panel.add(scrollPane);
 
-				Label label = new Label("\u4EE5\u4E0B\u4E3A\u67E5\u8BE2\u4FE1\u606F");
+				Label label = new Label("以下是查询信息");
 				label.setForeground(Color.RED);
 				label.setFont(new Font("宋体", Font.PLAIN, 12));
 				label.setBounds(151, 10, 98, 23);
@@ -300,21 +322,32 @@ public class select_houseinfo {
 				try {
 					PreparedStatement st = (PreparedStatement) j.con
 							.prepareStatement("select *from house_pay where whoes=?");
-				st.setString(1, textField_2.getText());	
-			java.sql.ResultSet rs=st.executeQuery();
-			String text="";	
-			while(rs.next()) {
-					text+="占用人ID：";
-					text += rs.getString("people");
-					text += "\t" + "id: " + rs.getString("id");
-					text += "\t" + "状态： " + rs.getString("status");
-					text += "\t" + "平方米： " + rs.getString("squer");
-					text += "\t" + "价格： " + rs.getString("money");
-					text += "\t" + "所属人： " + rs.getString("whoes");
-					text += "\t" + "所属人账户：" + rs.getString("accountnumber");
-					text += "\n";
-				}
-			textArea.setText(text);
+					st.setString(1, textField_2.getText());
+					java.sql.ResultSet rs = st.executeQuery();
+					Vector columnNames = new Vector();
+
+					columnNames.add("占用人ID");
+					columnNames.add("房屋ID");
+					columnNames.add("状态");
+					columnNames.add("大小");
+					columnNames.add("价格");
+					columnNames.add("所属人");
+					columnNames.add("所属人账户");
+					Vector rowData = new Vector();
+					while (rs.next()) {
+						Vector data = new Vector();
+						data.add(rs.getString(1));
+						data.add(rs.getString(2));
+						data.add(rs.getString(3));
+						data.add(rs.getInt(4));
+						data.add(rs.getInt(5));
+						data.add(rs.getString(6));
+						data.add(rs.getString(7));
+						rowData.add(data);
+					}
+					JTable t = new JTable(rowData, columnNames);
+					scrollPane.add(t);
+					scrollPane.setViewportView(t);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
